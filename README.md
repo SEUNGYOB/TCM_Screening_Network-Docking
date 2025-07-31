@@ -11,7 +11,17 @@ Prerequisite
     herb_graph = HerbGraphManager()
     herb_graph.save_distance_cache_from_db()
 
-****3. execution_file.py 사용방법
-**   **targe**t_val = "MONDO_0021187"
-   ** run_screening(target_val, "disease")****
-********
+#3. execution_file.py 사용방법
+   #3-1 "disease" 레벨에서 screening 원하는 경우
+    target_val = "MONDO_0021187"
+    run_screening(target_val, "disease")
+
+  #3-2 "pathway" 레벨에서 screening 원하는 경우
+    pathway_list =["hsa04979"]
+    for pathway in pathway_list:
+      run_screening(pathway, "pathway")
+
+  #3-3 "genes" 레벨에서 screening 원하는 경우
+  gene_list = ["HMGCR"]
+  for gene in gene_list:
+    run_screening(gene, "genes")
