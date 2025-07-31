@@ -1,13 +1,3 @@
-# How to use this code
-
-## Prerequisite
-
-### 1. https://drive.google.com/file/d/19pyxIsQkW7GVuG1Tff0JwPs8fq3pb3pN/view?usp=sharing 에서 "data.zip" download
- - Disease_data 'folder'
- - herb_network_Result.db
- - herbs_detailed_database.db
- - herbs_list.csv (herb name list)
-
 # How to Use This Code
 
 ## Prerequisites
