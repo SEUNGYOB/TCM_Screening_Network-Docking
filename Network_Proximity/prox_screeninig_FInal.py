@@ -13,8 +13,8 @@ from bioservices import KEGG
 from mygene import MyGeneInfo
 from sqlalchemy import create_engine, text
 from tqdm.auto import tqdm
+from proximity_util import nx_to_igraph, build_matrix, DistMatrix,build_matrix, DistMatrix, compute_network_distances_GPU
 
-from proximity_util import build_matrix, DistMatrix, compute_network_distances_GPU
 
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
@@ -44,7 +44,6 @@ class HerbDatabase:
         with self.engine.connect() as conn:
             ids = [str(r[0]) for r in conn.execute(sql, {"name": std_name})]
         return ids
-
 
 class TargetResolver:
     def __init__(self):
@@ -131,6 +130,36 @@ class HerbGraphManager:
         self.cache_dir.mkdir(exist_ok=True)
         self.g = None
         self.dist = None
+
+    def save_distance_cache_from_db(self, table_name: str = "Human_PPI"):
+        """
+        DB에서 Human_PPI 테이블을 불러와 .npy 거리행렬 캐시 저장 (1회만 필요)
+        """
+        db_path = self.db_file
+        output_path = self.cache_dir / "human_ppi_dist.npy"
+
+        # 1. DB에서 edge 불러오기
+        if not Path(db_path).exists():
+            raise FileNotFoundError(f"❌ DB 파일이 존재하지 않습니다: {db_path}")
+
+        log.info(f"📥 DB 로드 시작: {db_path}")
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT protein1, protein2 FROM {table_name}")
+        edges = cursor.fetchall()
+        conn.close()
+        log.info(f"↳ 엣지 개수: {len(edges):,}")
+
+        # 2. NetworkX 그래프 생성
+        G = nx.Graph()
+        G.add_edges_from(edges)
+
+        # 3. igraph 변환 + 거리행렬 계산 및 저장
+        g_ig, _ = nx_to_igraph(G)
+        output_path.parent.mkdir(exist_ok=True)
+        build_matrix(g_ig, output_path)
+
+        log.info(f"✅ 거리행렬 캐시 저장 완료 → {output_path.resolve()}")
 
     def prepare_graph(self):
         if not self.tmp_gpath.exists():
@@ -296,3 +325,5 @@ class EvaluationEngine:
 
         print(f"[SAVE] Evaluation results saved → {out_path}")
         return None
+
+
