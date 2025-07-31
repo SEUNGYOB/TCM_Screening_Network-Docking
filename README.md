@@ -36,12 +36,12 @@ Copy the human_ppi_dist.npy from the downloaded data/ directory into your local 
     target_val = "MONDO_0021187"
     run_screening(target_val, "disease")
 
-  ## 3-2 Run screening at the "pathway" level
+  ## 3-2 Run screening at the "pathway" level (from KEGG)
     pathway_list =["hsa04979"]
     for pathway in pathway_list:
       run_screening(pathway, "pathway")
 
-  ## 3-3 Run screening at the "genes" level
+  ## 3-3 Run screening at the "genes" level (symbol,alias,entrezgene,ensembl.gene,uniprot)
     gene_list = ["HMGCR"]
     for gene in gene_list:
       run_screening(gene, "genes")
