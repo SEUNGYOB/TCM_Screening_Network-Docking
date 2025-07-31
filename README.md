@@ -3,7 +3,10 @@
 ## Prerequisite
 
 ### 1. https://drive.google.com/file/d/19pyxIsQkW7GVuG1Tff0JwPs8fq3pb3pN/view?usp=sharing 에서 "data.zip" download
-  ./Data 안에 Disease_data folder 및 내용물, herb_network_Result.db, herbs_detailed_database.db, herbs_list.csv
+ - Disease_data folder
+ - herb_network_Result.db
+ - herbs_detailed_database.db
+ - herbs_list.csv (herb name list)
 
 ### 2. Human PPI 안의 노드 간의 모든 거리 계산된 캐시 확보(다운로드 or 직접 계산 코드)
   .cache 디렉토리 안에 human_ppi_dist.npy 파일 필요
