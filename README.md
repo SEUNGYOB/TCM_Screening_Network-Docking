@@ -11,4 +11,7 @@ Prerequisite
     herb_graph = HerbGraphManager()
     herb_graph.save_distance_cache_from_db()
 
-3.
+3. execution_file.py 사용방법
+   target_val = "MONDO_0021187"
+   ** run_screening(target_val, "disease")**
+
